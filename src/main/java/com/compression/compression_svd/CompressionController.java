@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
@@ -32,6 +33,8 @@ import java.util.logging.Logger;
 public class CompressionController extends Application implements Initializable
 {
     @FXML
+    public AnchorPane mainPane;
+    @FXML
     private ScrollBar scrollBar;
 
     @FXML
@@ -41,12 +44,12 @@ public class CompressionController extends Application implements Initializable
     @FXML
     ImageView imageView;
     Stage curStage;
+    ImageView newImg = new ImageView();
 
 
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-
         curStage = primaryStage;
         /// Loads first View -> Intro
         Parent mainPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("svd.fxml")));
@@ -56,11 +59,10 @@ public class CompressionController extends Application implements Initializable
 
         /// Configures initial settings of the game for the primary stage.
         primaryStage.setTitle("SVD Compression");
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
-        primaryStage.setWidth(610);
-        primaryStage.setHeight(410);
-        primaryStage.setMinWidth(610);
-        primaryStage.setMinHeight(410);
+        primaryStage.setWidth(810);
+        primaryStage.setHeight(510);
         primaryStage.setFullScreenExitHint("");
 
         primaryStage.show();
@@ -80,13 +82,27 @@ public class CompressionController extends Application implements Initializable
 
     private void openNewImageWindow(File file)
     {
-
+//        if(mainPane.lookup("img") == null)
+//        {
+//            mainPane.getChildren().add(newImg);
+//            newImg.setId("img");
+//        }
         image = new Image(file.toURI().toString());
+        newImg.setImage(image);
+        newImg.setPreserveRatio(true);
+        newImg.setFitHeight(200);
+        newImg.setLayoutX((370-200.0*image.getWidth()/image.getHeight())/2);
+        System.out.println(newImg.getImage().getWidth());
+        newImg.setY(120);
 
 //        imageView.setPreserveRatio(true);
-        imageView.setImage(image);
-        imageView.setSmooth(true);
-        imageView.setCache(true);
+//        imageView.setImage(image);
+//        if(imageView.getImage().getWidth()+26 <= 333)
+//        {
+//            imageView.setLayoutX(333 - (imageView.getImage().getWidth()+4*26));
+//        }
+//        imageView.setSmooth(true);
+//        imageView.setCache(true);
 
     }
 
@@ -134,6 +150,7 @@ public class CompressionController extends Application implements Initializable
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        mainPane.getChildren().add(newImg);
         scrollBar.setValue(scrollBar.getMax());
     }
 }
